@@ -33,10 +33,10 @@ pip install -r requirements.txt
 6. Actualiza los detalles de conexión a la base de datos en ´catalogo_peliculas.py´
 ```sh
 db_connection = mysql.connector.connect(
-    host="tu_host",
-    user="tu_usuario",
+    host="localhost",
+    user="tu_usuario",              // por lo general es root
     password="tu_contraseña",
-    database="tu_base_de_datos"
+    database="tu_base_de_datos"     // el nombre de tu schema en Workbench
 )
 ```
 
