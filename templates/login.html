@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{{ url_for('static', filename='fondo1.jpeg') }}");
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 80%; /* Cambiado a un ancho más grande */
+            max-width: 500px; /* Ancho máximo para mantener el diseño */
+            height: auto; /* Altura automática */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .btnLogin {
+            background: #fff;
+            color: #d53d38;
+            border: 2px solid #d53d38;
+            padding: 10px 20px;
+            border-radius: 3px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            display: inline-block;
+            text-align: center;
+            margin: auto;
+        }
+
+        .btnLogin:hover {
+            color: #fff;
+        }
+
+        .btnLogin::after {
+            content: "";
+            background: #d53d38;
+            position: absolute;
+            z-index: -1;
+            padding: 16px 20px;
+            display: block;
+            left: 0;
+            right: 0;
+            top: 100%;
+            bottom: -100%;
+            -webkit-transition: all 0.35s;
+            transition: all 0.35s;
+        }
+
+        .btnLogin:hover::after {
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            -webkit-transition: all 0.35s;
+            transition: all 0.35s;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+            </div>
+            <p>¿No tienes cuenta? <a href="{{ url_for('registro_usuario') }}">Registrate</a> </p>
+            <button class="btnLogin" type="submit">Login</button>
+        </form>
+    </div>
+</body>
+
+</html>
+    

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Pelicula</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0%;
+            padding: 0%;
+            height: 100vh;
+            background-image: url("{{ url_for('static', filename='fondo1.jpeg') }}");
+            background-size: cover;
+        }
+
+        .title {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .title h1 {
+            text-align: center;
+            padding: 0 0 20px 0;
+            border-bottom: 1px solid silver;
+        }
+
+        .title form {
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+
+        form .pelicula {
+            position: relative;
+            border-bottom: 2px solid silver;
+            margin: 30px 0;
+
+        }
+
+        .pelicula input {
+            width: 100%;
+            padding: 0 5px;
+            height: 40px;
+            font-size: 16px;
+            border: none;
+            background: none;
+            outline: none;
+
+        }
+
+        form .duracion {
+            position: relative;
+            border-bottom: 2px solid silver;
+            margin: 30px 0;
+
+        }
+
+        .duracion input {
+            width: 100%;
+            padding: 0 5px;
+            height: 40px;
+            font-size: 16px;
+            border: none;
+            background: none;
+            outline: none;
+
+        }
+
+        form .año {
+            position: relative;
+            border-bottom: 2px solid silver;
+            margin: 30px 0;
+
+        }
+
+        .año input {
+            width: 100%;
+            padding: 0 5px;
+            height: 40px;
+            font-size: 16px;
+            border: none;
+            background: none;
+            outline: none;
+
+        }
+
+        form .boton {
+            display: flex;
+        }
+
+        form .botonAgregar {
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+
+        .botonAgregar {
+            background: #fff;
+            color: #d53d38;
+            border: 2px solid #d53d38;
+            padding: 10px 20px;
+            border-radius: 3px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .botonAgregar:hover {
+            color: #fff;
+        }
+
+        .botonAgregar::after {
+            content: "";
+            background: #d53d38;
+            position: absolute;
+            z-index: -1;
+            padding: 16px 20px;
+            display: block;
+            left: 0;
+            right: 0;
+            top: 100%;
+            bottom: -100%;
+            -webkit-transition: all 0.35s;
+            transition: all 0.35s;
+        }
+
+        .botonAgregar:hover::after {
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            -webkit-transition: all 0.35s;
+            transition: all 0.35s;
+        }
+
+        p {
+            padding: 0 5px;
+            margin: 0 0 15px;
+        }
+
+        form .generos {
+            position: relative;
+            margin: 30px 0;
+        }
+        .genero {
+            padding: 0 5px;
+            margin-bottom: 30px;
+            width: 430px;
+            font-size: medium;
+            border-bottom: 2px solid silver;
+            height: 30px;
+
+        }
+
+    </style>
+</head> 
+
+<body> 
+    <div class="title">
+        <h1>Agregar Pelicula</h1>
+        <form method="post">
+            <div class="pelicula">
+                <input name="pelicula" type="text" required placeholder="Nombre de pelicula">
+            </div>
+            <div class="duracion">
+                <input name="duracion" type="number" required placeholder="Duración (horas)">
+            </div>
+            <div class="año">
+                <input name="año" type="number" required placeholder="Año de estreno">
+            </div>
+            <div class="boton">
+                <button class="botonAgregar">Agregar película</button>
+            </div>
+        </form>
+
+    </div>
+</body>
+
+</html>
