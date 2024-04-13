@@ -24,3 +24,23 @@ python -m venv env
 ```sh
 .\env\Scripts\activate
 ```
+
+5. Instala los paquetes de Python requeridos (importante!): 
+```sh
+pip install -r requirements.txt
+```
+
+6. Actualiza los detalles de conexión a la base de datos en ´catalogo_peliculas.py´
+```sh
+db_connection = mysql.connector.connect(
+    host="tu_host",
+    user="tu_usuario",
+    password="tu_contraseña",
+    database="tu_base_de_datos"
+)
+```
+
+7. Ejecuta la aplicación de Flask, hooray!
+```sh
+flask --app catalogo_peliculas.py run
+```
