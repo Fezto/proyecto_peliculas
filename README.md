@@ -19,3 +19,8 @@ Este proyecto es una aplicación Flask que utiliza MySQL para las operaciones de
 ```sh
 python -m venv env
 ```
+
+4. Activa el entorno virtual:
+```sh
+.\env\Scripts\activate
+```
