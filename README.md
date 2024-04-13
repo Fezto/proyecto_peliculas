@@ -12,7 +12,7 @@ Este proyecto es una aplicación Flask que utiliza MySQL para las operaciones de
 
 1. Clona el repositorio en tu máquina local.
 
-2. Navega al directorio del proyecto en tu terminal.
+2. Navega al directorio del proyecto en tu terminal e importa la base de datos en Workbench.
 
 3. Configura un entorno virtual:
 
@@ -44,3 +44,5 @@ db_connection = mysql.connector.connect(
 ```sh
 flask --app catalogo_peliculas.py run
 ```
+
+8. Ingresa a la base de datos poniendo "admin" como usuario y "admin" como contraseña
