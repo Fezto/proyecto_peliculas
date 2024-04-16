@@ -10,8 +10,8 @@ import mysql.connector
 db_connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="tu_contraseña",
-    database="tu_db"
+    password="Spongebob400!",
+    database="pelis"
 )
 
 #! Creación de un cursor, un "apuntador" que sirve para ejecutar los
@@ -39,9 +39,9 @@ def obtener_peliculas():
     return peliculas
 
 
-def agregar_pelicula(pelicula, duracion, año):
+def agregar_pelicula(nombre, duracion, año):
     consulta = "INSERT INTO peliculas (nombre, duracion, año) VALUES (%s, %s, %s)"
-    datos_pelicula = (pelicula, duracion, año)
+    datos_pelicula = (nombre, duracion, año)
     cursor.execute(consulta, datos_pelicula)
     db_connection.commit()
     return True
@@ -66,66 +66,80 @@ def eliminar_pelicula(id_pelicula):
 #! Definición de rutas. Esto es lo que se llama directamente desde los botones
 #! dentro de dashboard.html y es lo que abre las páginas para la inserción de datos
 
+# * Esta es la ruta base, por lo que es el cual está la página por defecto. En si es el dashboard.
+
 @app.route("/", methods=['POST', 'GET'])
 def home():
-    if (is_user_logged_in()):
-        peliculas = obtener_peliculas()
-        return render_template('dashboard.html', peliculas=peliculas, total_peliculas=len(peliculas))
     error = None
-    if request.method == 'POST':
-        if valid_login(request.form['username'],
-                       request.form['password']):
-            return log_user(request.form['username'])
+    # Tráeme el dashboard, por favor
+    if request.method == 'GET':
+        if (is_user_logged_in()):
+            peliculas = obtener_peliculas()
+            return render_template('dashboard.html', peliculas=peliculas, total_peliculas=len(peliculas))
         else:
-            error = 'Invalid username/password'
-    return render_template('login.html', error=error)
+            error = "¡No existe un usuario logeado!"
+            return render_template('login.html', error=error)
 
+    # Hey, te estoy enviando mis credenciales antes de acceder para iniciar sesión ¿Son correctas?
+    if request.method == 'POST':
+        if valid_login(request.form['username'], request.form['password']):
+            return log_user()
+        else:
+            error = '¡Username o contraseña inválido!'
+            return render_template('login.html', error=error)
+
+
+# * Esta es la ruta que atende al login.
 
 @app.route("/registro", methods=["POST", "GET"])
 def registro_usuario():
     error = None
+
+    # Tráeme la página de registro, 0 restricciones, 0 miedo!
+    if request.method == 'GET':
+        return render_template('registro.html', error=error)
+    
+    # Ya te envie mis datos de registro de nuvo usuario, generalo!
     if request.method == 'POST':
         if registro(request.form['usuario'], request.form['contraseña']):
             return redirect(url_for('home'))
         else:
             error = 'Error al registrar usuario'
-    return render_template('registro.html', error=error)
 
+
+#* Esta es la ruta que se encarga propiamete de agregar películas
 
 @app.route("/agregar_pelicula", methods=['POST', 'GET'])
 def agregarPelicula():
     if (not is_user_logged_in()):
         abort(403)
+
+    # Enviame a la página de inserción de una nueva película!
     if request.method == 'GET':
-        pelicula = {}  # Define your pelicula object here
+        pelicula = {}  
         return render_template('agregarPelicula.html', pelicula=pelicula)
+    
+    # Una vez insertados los datos, crea una nueva película, insértala y redirígeme de vuelta al dashboard
     if request.method == 'POST':
-        agregar_pelicula(
-            request.form['pelicula'], request.form['duracion'], request.form['año'])
-    return redirect(url_for('home'))
+        agregar_pelicula(request.form['pelicula'], request.form['duracion'], request.form['año'])
+        return redirect(url_for('home'))
 
 
 @app.route("/editar_pelicula/<id_pelicula>", methods=['POST', 'GET'])
 def editarPelicula(id_pelicula):
+
+    # Quiero acceder a la ventana de edición! Busca la película y luego muestra la página.
     if request.method == 'GET':
-        # Buscar la película en la base de datos
         cursor.execute(
             "SELECT * FROM peliculas WHERE id_pelicula = %s", (id_pelicula,))
-        pelicula = cursor.fetchone()
+        pelicula = cursor.fetchone()    #
         if pelicula is None:
-            abort(404)  # Si no se encuentra la película, devolver un error 404
-        # Renderizar la plantilla, pasando la película como un argumento
+            abort(404)
         return render_template('editarPelicula.html', pelicula=pelicula)
+    
+    # Ya que termine de insertar los datos de edición, edita la película existente
     if request.method == 'POST':
-        # Tomar los datos del formulario de la solicitud
-        nuevo_nombre = request.form['pelicula']
-        nueva_duracion = request.form['duracion']
-        nuevo_año = request.form['año']
-        # Actualizar la película en la base de datos
-        cursor.execute("UPDATE peliculas SET nombre = %s, duracion = %s, año = %s WHERE id_pelicula = %s",
-                       (nuevo_nombre, nueva_duracion, nuevo_año, id_pelicula))
-        db_connection.commit()
-        # Redirigir al usuario a la página de inicio
+        editar_pelicula(id_pelicula, request.form['pelicula'], request.form['duracion'], request.form['año'])
         return redirect(url_for('home'))
 
 
@@ -137,18 +151,23 @@ def eliminarPelicula():
     eliminar_pelicula(id_pelicula)
     return redirect(url_for('home'))
 
+
 #! Funciones para checar las credenciales del login
 
-
-def log_user(username):
+# * Finaliza el proceso de ingreso del usuario y establece una cookie
+def log_user():
     resp = make_response(redirect(url_for('home')))
     maxAge = 60 * 60
     resp.set_cookie('session_token', '123', max_age=maxAge)
     return resp
 
+# * Verifica si el usuario sigue estando logeado dentro de su sesión
+
 
 def is_user_logged_in():
     return request.cookies.get('session_token')
+
+# * Verifica si el usuario y la contraseña proporcionadas son correctas
 
 
 def valid_login(username, password):
